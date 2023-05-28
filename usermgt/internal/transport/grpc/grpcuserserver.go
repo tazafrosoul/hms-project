@@ -2,7 +2,8 @@ package grpc
 
 import (
 	"context"
-	"hms-project/usermgt/internal/transport/grpc/usersgrpc"
+	"fmt"
+	"hms-project/grpc/users/pb"
 	"log"
 	"net"
 
@@ -10,31 +11,32 @@ import (
 )
 
 type UserServer struct {
-	usersgrpc.UnimplementedUserMgtServer
+	pb.UnimplementedUserMgtServer
 }
 
 func NewUserServer() *UserServer {
-	//TODO this will have dependency injection
+	//TODO inject logs and other dependency
 	return &UserServer{}
 }
 
-func (s *UserServer) GetUser(context.Context, *usersgrpc.UserRequest) (*usersgrpc.UserResponse, error) {
-	return &usersgrpc.UserResponse{
-		Name: "test",
+func (s *UserServer) AddUser(ctx context.Context, in *pb.UserRequest) (*pb.UserResponse, error) {
+	fmt.Printf("received from client the username: %s\n", in.Name)
+	return &pb.UserResponse{
+		Name: in.Name,
 		Role: "test",
 	}, nil
-	//TODO implement the method logic here
+	//TODO implement then inject the method logic here
 }
 
 func (s *UserServer) Run(addr string) {
 
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
-		log.Fatalf("cannot listen to said port : %v", err)
+		log.Fatalf("failed to listen to port %s : %v", addr, err)
 	}
 
 	registrar := grpc.NewServer()
-	usersgrpc.RegisterUserMgtServer(registrar, s)
+	pb.RegisterUserMgtServer(registrar, s)
 
 	registrar.Serve(lis)
 }

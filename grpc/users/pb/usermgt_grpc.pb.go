@@ -4,7 +4,7 @@
 // - protoc             v4.22.4
 // source: usermgt.proto
 
-package usersgrpc
+package pb
 
 import (
 	context "context"
@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserMgtClient interface {
-	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	AddUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 }
 
 type userMgtClient struct {
@@ -33,9 +33,9 @@ func NewUserMgtClient(cc grpc.ClientConnInterface) UserMgtClient {
 	return &userMgtClient{cc}
 }
 
-func (c *userMgtClient) GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
+func (c *userMgtClient) AddUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/UserMgt/GetUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.UserMgt/AddUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (c *userMgtClient) GetUser(ctx context.Context, in *UserRequest, opts ...gr
 // All implementations must embed UnimplementedUserMgtServer
 // for forward compatibility
 type UserMgtServer interface {
-	GetUser(context.Context, *UserRequest) (*UserResponse, error)
+	AddUser(context.Context, *UserRequest) (*UserResponse, error)
 	mustEmbedUnimplementedUserMgtServer()
 }
 
@@ -54,8 +54,8 @@ type UserMgtServer interface {
 type UnimplementedUserMgtServer struct {
 }
 
-func (UnimplementedUserMgtServer) GetUser(context.Context, *UserRequest) (*UserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+func (UnimplementedUserMgtServer) AddUser(context.Context, *UserRequest) (*UserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddUser not implemented")
 }
 func (UnimplementedUserMgtServer) mustEmbedUnimplementedUserMgtServer() {}
 
@@ -70,20 +70,20 @@ func RegisterUserMgtServer(s grpc.ServiceRegistrar, srv UserMgtServer) {
 	s.RegisterService(&UserMgt_ServiceDesc, srv)
 }
 
-func _UserMgt_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserMgt_AddUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserMgtServer).GetUser(ctx, in)
+		return srv.(UserMgtServer).AddUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/UserMgt/GetUser",
+		FullMethod: "/pb.UserMgt/AddUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserMgtServer).GetUser(ctx, req.(*UserRequest))
+		return srv.(UserMgtServer).AddUser(ctx, req.(*UserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,12 +92,12 @@ func _UserMgt_GetUser_Handler(srv interface{}, ctx context.Context, dec func(int
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserMgt_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "UserMgt",
+	ServiceName: "pb.UserMgt",
 	HandlerType: (*UserMgtServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetUser",
-			Handler:    _UserMgt_GetUser_Handler,
+			MethodName: "AddUser",
+			Handler:    _UserMgt_AddUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
