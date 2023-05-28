@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "hms-project/usermgt/internal/transport/grpc/usersgrpc";
+
+message UserRequest {
+    string Name = 1;
+}
+
+message UserResponse {
+    string Name = 1;
+    string Role = 2;
+}
+
+service UserMgt {
+    rpc GetUser (UserRequest) returns (UserResponse);
+
+}
