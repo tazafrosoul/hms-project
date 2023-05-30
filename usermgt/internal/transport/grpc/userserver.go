@@ -15,7 +15,7 @@ type UserServer struct {
 }
 
 func NewUserServer() *UserServer {
-	//TODO inject logs and other dependency
+	//TODO inject logs and other dependencies
 	return &UserServer{}
 }
 
@@ -38,5 +38,8 @@ func (s *UserServer) Run(addr string) {
 	registrar := grpc.NewServer()
 	pb.RegisterUserMgtServer(registrar, s)
 
-	registrar.Serve(lis)
+	if err := registrar.Serve(lis); err != nil {
+		log.Fatalf("failed to listen to addr %s : %v", addr, err)
+	}
+
 }
