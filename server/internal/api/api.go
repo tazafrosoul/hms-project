@@ -1,7 +1,7 @@
 package api
 
 import (
-	i "hms-project/server/common/interfaces"
+	i "hms-project/common/interfaces"
 	"log"
 )
 

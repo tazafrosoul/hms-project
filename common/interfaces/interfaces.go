@@ -1,6 +1,6 @@
 package i
 
-import s "hms-project/server/common/structs"
+import s "hms-project/common/structs"
 
 type Server interface {
 	Route()
@@ -8,9 +8,9 @@ type Server interface {
 }
 
 type ApiService interface {
-	AddUser(string) s.User
+	AddUser(s.AddUserReq) s.AddUserRes
 }
 
 type GrpcTransport interface {
-	AddUser(string) s.User
+	AddUser(s.AddUserReq) s.AddUserRes
 }

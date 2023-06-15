@@ -2,8 +2,6 @@ package ginmux
 
 import (
 	i "hms-project/common/interfaces"
-	s "hms-project/common/structs"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,18 +22,7 @@ func NewGin(service i.ApiService) *Gin {
 // ---------ROUTES---------
 func (g *Gin) Route() { //TODO requires gRPC transport to users microservice
 
-	g.server.POST("/user", func(ctx *gin.Context) {
-		req := s.AddUserReq{}
-		if err := ctx.BindJSON(&req); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "could not bind JSON"})
-		}
-
-		user := g.api.AddUser(req.Name)
-
-		//TODO implement add new user
-
-		ctx.JSON(http.StatusOK, user)
-	})
+	g.server.POST("/user", AddUser(g.api.AddUser))
 }
 
 func (g *Gin) Run(addr string) error {

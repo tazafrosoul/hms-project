@@ -5,14 +5,22 @@ package pb;
 option go_package = "hms-project/grpc/users/pb";
 
 message UserRequest {
-    string Name = 1;
+    string FullName = 1;
+	string Username = 2;
+	string Email    = 3;
+	string Avatar   = 4;
+	string Password = 5;
+    string Role     = 6;
 }
 
 message UserResponse {
-    string Name = 1;
-    string Role = 2;
+    string FullName = 1;
+	string Username = 2;
+	string Email    = 3;
+	string Avatar   = 4;
+    string Role     = 5;
+    string ID       = 6;
 }
-
 service UserMgt {
     rpc AddUser (UserRequest) returns (UserResponse);
 }

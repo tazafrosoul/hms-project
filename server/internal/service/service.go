@@ -15,7 +15,7 @@ func NewService(gt i.GrpcTransport) *Service {
 	}
 }
 
-func (as *Service) AddUser(name string) s.User {
+func (ss *Service) AddUser(aurq s.AddUserReq) s.AddUserRes {
 	//implement logic here
-	return as.grpcTrans.AddUser(name)
+	return ss.grpcTrans.AddUser(aurq)
 }

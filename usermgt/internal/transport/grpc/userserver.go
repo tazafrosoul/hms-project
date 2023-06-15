@@ -20,10 +20,15 @@ func NewUserServer() *UserServer {
 }
 
 func (s *UserServer) AddUser(ctx context.Context, in *pb.UserRequest) (*pb.UserResponse, error) {
-	fmt.Printf("received from client the username: %s\n", in.Name)
-	return &pb.UserResponse{
-		Name: in.Name,
-		Role: "test",
+	fmt.Printf("received from client the user to add: %s\n", in.FullName) //TODO remove this log line and inject add user logic
+
+	return &pb.UserResponse{ //change this hardwired mess
+		FullName: in.FullName,
+		Username: in.Username,
+		Email:    in.Email,
+		Avatar:   in.Avatar,
+		Role:     in.Role,
+		ID:       "will be generated", //TODO generate id from database maybe.
 	}, nil
 	//TODO implement then inject the method logic here
 }

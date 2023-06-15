@@ -23,7 +23,7 @@ func NewGrpcTrans() *GrpcTrans {
 	return &GrpcTrans{}
 }
 
-func (t *GrpcTrans) AddUser(name string) s.User {
+func (t *GrpcTrans) AddUser(aurq s.AddUserReq) s.AddUserRes {
 	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("could not dial the grpc service: %v", err)
@@ -37,7 +37,12 @@ func (t *GrpcTrans) AddUser(name string) s.User {
 
 	//structure mock user here------
 	user := pb.UserRequest{
-		Name: name,
+		FullName: aurq.FullName,
+		Username: aurq.Username,
+		Email:    aurq.Email,
+		Avatar:   aurq.Avatar,
+		Password: aurq.Password,
+		Role:     aurq.Role,
 	}
 
 	//call remote procedure here------
@@ -46,8 +51,12 @@ func (t *GrpcTrans) AddUser(name string) s.User {
 		log.Fatalf("could not add user: %v", err)
 	}
 	fmt.Printf("received data from server: %v\n", res)
-	return s.User{
-		Name: res.Name,
-		Role: res.Role,
+	return s.AddUserRes{
+		ID:       res.ID,
+		FullName: res.FullName,
+		Username: res.Username,
+		Email:    res.Email,
+		Avatar:   res.Avatar,
+		Role:     res.Role,
 	}
 }
