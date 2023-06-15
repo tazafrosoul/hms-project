@@ -3,8 +3,8 @@ package grpc
 import (
 	"context"
 	"fmt"
+	s "hms-project/common/structs"
 	"hms-project/grpc/users/pb"
-	s "hms-project/server/common/structs"
 	"log"
 	"time"
 

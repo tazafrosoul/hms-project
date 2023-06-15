@@ -1,8 +1,8 @@
 package ginmux
 
 import (
-	i "hms-project/server/common/interfaces"
-	s "hms-project/server/common/structs"
+	i "hms-project/common/interfaces"
+	s "hms-project/common/structs"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
