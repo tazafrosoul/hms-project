@@ -20,7 +20,7 @@ func NewGin(service i.ApiService) *Gin {
 }
 
 // ---------ROUTES---------
-func (g *Gin) Route() { //TODO requires gRPC transport to users microservice
+func (g *Gin) Route() {
 
 	g.server.POST("/user", AddUser(g.api.AddUser))
 }
