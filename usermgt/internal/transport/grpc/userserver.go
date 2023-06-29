@@ -3,6 +3,8 @@ package grpc
 import (
 	"context"
 	"fmt"
+	i "hms-project/common/interfaces"
+	s "hms-project/common/structs"
 	"hms-project/grpc/users/pb"
 	"log"
 	"net"
@@ -10,30 +12,47 @@ import (
 	"google.golang.org/grpc"
 )
 
-type UserServer struct {
+type UserTransport struct {
+	usi i.UserService
 	pb.UnimplementedUserMgtServer
 }
 
-func NewUserServer() *UserServer {
+func NewUserTransport(usi i.UserService) *UserTransport {
 	//TODO inject logs and other dependencies
-	return &UserServer{}
+	return &UserTransport{
+		usi: usi,
+	}
 }
 
-func (s *UserServer) AddUser(ctx context.Context, in *pb.UserRequest) (*pb.UserResponse, error) {
-	fmt.Printf("received from client the user to add: %s\n", in.FullName) //TODO remove this log line and inject add user logic
+func (ut *UserTransport) AddUser(ctx context.Context, in *pb.UserRequest) (*pb.UserResponse, error) {
+	fmt.Printf("received from client the user: %s\n", in.FullName) //TODO remove this log line and inject add user logic
 
-	return &pb.UserResponse{ //change this hardwired mess
+	request := &s.AddUserReq{
+		By:       "", //TODO implement receiving operating user
 		FullName: in.FullName,
 		Username: in.Username,
 		Email:    in.Email,
 		Avatar:   in.Avatar,
 		Role:     in.Role,
-		ID:       "will be generated", //TODO generate id from database maybe.
+		Password: in.Password, //TODO hash password + validate on the http server
+	}
+
+	res, err := ut.usi.AddUser(*request)
+	if err != nil {
+		return &pb.UserResponse{}, err
+	}
+
+	return &pb.UserResponse{ //change this hardwired mess
+		FullName: res.FullName,
+		Username: res.Username,
+		Email:    res.Email,
+		Avatar:   res.Avatar,
+		Role:     res.Role,
+		ID:       res.ID,
 	}, nil
-	//TODO implement then inject the method logic here
 }
 
-func (s *UserServer) Run(addr string) {
+func (ut *UserTransport) Run(addr string) {
 
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -41,7 +60,7 @@ func (s *UserServer) Run(addr string) {
 	}
 
 	registrar := grpc.NewServer()
-	pb.RegisterUserMgtServer(registrar, s)
+	pb.RegisterUserMgtServer(registrar, ut)
 
 	if err := registrar.Serve(lis); err != nil {
 		log.Fatalf("failed to listen to addr %s : %v", addr, err)

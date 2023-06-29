@@ -16,7 +16,7 @@ func AddUser(in func(s.AddUserReq) s.AddUserRes) func(*gin.Context) {
 
 		user := in(req)
 
-		//TODO implement add new user
+		//TODO implement checks and logs
 
 		ctx.JSON(http.StatusOK, user)
 	}

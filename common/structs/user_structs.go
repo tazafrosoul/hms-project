@@ -9,7 +9,6 @@ type User struct {
 	Email          string    `json:"email"`
 	Avatar         string    `json:"avatar"`
 	HashedPassword string    `json:"hashed_password"`
-	Balance        []Balance `json:"balance"`
 	Role           string    `json:"role"`
 	CreatedAt      time.Time `json:"created_at"`
 	CreatedBy      string    `json:"created_by"` //this is ID of the user who created this user
@@ -19,11 +18,13 @@ type User struct {
 }
 
 type Balance struct {
-	UsedCurrency string `json:"currency"`
-	Amount       string `json:"amount"`
+	UserID   string `json:"user_id"`
+	Currency string `json:"currency"`
+	Amount   string `json:"amount"`
 }
 
 type AddUserReq struct {
+	By       string `json:"by"`
 	FullName string `json:"full_name"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
