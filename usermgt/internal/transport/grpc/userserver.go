@@ -18,17 +18,17 @@ type UserTransport struct {
 }
 
 func NewUserTransport(usi i.UserService) *UserTransport {
-	//TODO inject logs and other dependencies
+	//TODO inject log
 	return &UserTransport{
 		usi: usi,
 	}
 }
 
 func (ut *UserTransport) AddUser(ctx context.Context, in *pb.UserRequest) (*pb.UserResponse, error) {
-	fmt.Printf("received from client the user: %s\n", in.FullName) //TODO remove this log line and inject add user logic
+	fmt.Printf("received from client the user: %s\n", in.FullName)
 
-	request := &s.AddUserReq{
-		By:       "", //TODO implement receiving operating user
+	request := s.AddUserReq{
+		By:       in.By,
 		FullName: in.FullName,
 		Username: in.Username,
 		Email:    in.Email,
@@ -37,7 +37,7 @@ func (ut *UserTransport) AddUser(ctx context.Context, in *pb.UserRequest) (*pb.U
 		Password: in.Password, //TODO hash password + validate on the http server
 	}
 
-	res, err := ut.usi.AddUser(*request)
+	res, err := ut.usi.AddUser(request)
 	if err != nil {
 		return &pb.UserResponse{}, err
 	}

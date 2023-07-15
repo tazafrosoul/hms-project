@@ -3,6 +3,7 @@ package userservice
 import (
 	i "hms-project/common/interfaces"
 	s "hms-project/common/structs"
+	"log"
 )
 
 type UserService struct {
@@ -12,14 +13,17 @@ type UserService struct {
 }
 
 func NewUserService(repo i.Repo) *UserService {
-	return &UserService{}
+	return &UserService{
+		repo: repo,
+	}
 }
 
 func (us *UserService) AddUser(req s.AddUserReq) (s.AddUserRes, error) {
 	//get request
-	//TODO validation here
+	//TODO 2nd validation here
 
-	hashedPw := req.Password //TODO ----- (1) Hashing password...
+	hashedPw := req.Password //TODO Hash password in the http server, dont transport it naked
+	log.Printf("hashing password %v", hashedPw)
 
 	//format it into user struct
 	user := s.User{
@@ -29,11 +33,13 @@ func (us *UserService) AddUser(req s.AddUserReq) (s.AddUserRes, error) {
 		Avatar:         req.Avatar,
 		HashedPassword: hashedPw,
 		Role:           req.Role,
-		CreatedBy:      req.By, //TODO find a way to send a request with the active user ID
+		CreatedBy:      req.By,
 	}
 
-	//call repository method
+	log.Print("callin inmemo create")
 	res, err := us.repo.Create(user)
+
+	log.Print("returned successfully")
 
 	if err != nil {
 		return s.AddUserRes{}, err

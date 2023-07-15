@@ -24,6 +24,8 @@ func NewGrpcTrans() *GrpcTrans {
 }
 
 func (t *GrpcTrans) AddUser(aurq s.AddUserReq) s.AddUserRes {
+
+	//TODO make this a separate GrpcTrans method
 	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("could not dial the grpc service: %v", err)
@@ -34,9 +36,12 @@ func (t *GrpcTrans) AddUser(aurq s.AddUserReq) s.AddUserRes {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+	//-----------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
 	//structure mock user here------
 	user := pb.UserRequest{
+		By:       aurq.By,
 		FullName: aurq.FullName,
 		Username: aurq.Username,
 		Email:    aurq.Email,

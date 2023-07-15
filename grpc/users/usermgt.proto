@@ -11,6 +11,7 @@ message UserRequest {
 	string Avatar   = 4;
 	string Password = 5;
     string Role     = 6;
+	string By 		= 7;
 }
 
 message UserResponse {

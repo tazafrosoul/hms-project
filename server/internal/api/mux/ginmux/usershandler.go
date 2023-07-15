@@ -14,10 +14,10 @@ func AddUser(in func(s.AddUserReq) s.AddUserRes) func(*gin.Context) {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "could not bind JSON"})
 		}
 
-		user := in(req)
+		res := in(req)
 
 		//TODO implement checks and logs
 
-		ctx.JSON(http.StatusOK, user)
+		ctx.JSON(http.StatusOK, res)
 	}
 }
