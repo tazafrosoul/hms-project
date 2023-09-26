@@ -8,7 +8,7 @@ type Server interface {
 }
 
 type ApiService interface {
-	AddUser(s.AddUserReq) s.AddUserRes
+	AddUser(s.AddUserReq) (s.AddUserRes, error)
 }
 
 type UserService interface {
@@ -16,7 +16,7 @@ type UserService interface {
 }
 
 type GrpcTransport interface {
-	AddUser(s.AddUserReq) s.AddUserRes
+	AddUser(s.AddUserReq) (s.AddUserRes, error)
 }
 
 type Repo interface {
@@ -25,4 +25,9 @@ type Repo interface {
 
 type DB interface {
 	Run()
+}
+
+type Core interface {
+	Hash(string) string
+	validate(s.User) bool
 }

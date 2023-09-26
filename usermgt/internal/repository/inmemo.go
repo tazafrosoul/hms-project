@@ -1,9 +1,10 @@
 package repository
 
-//this is the test database
+//this is the test database. this will only be used for a development only. will not be included in development
 import (
 	"errors"
 	s "hms-project/common/structs"
+	"hms-project/common/utility"
 	"log"
 	"time"
 
@@ -16,9 +17,36 @@ type MemoRepo struct {
 
 func NewMemoRepo() *MemoRepo {
 	title := []string{"ID", "FullName", "Username", "Email", "Avatar", "HashedPassword", "Role", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy"}
+
 	return &MemoRepo{
 		memoryStorage: [][]string{title},
 	}
+}
+
+func (mr *MemoRepo) Init() error {
+	//NOTE: This shit is UNSAFE.
+	//TODO remember to remove it from production code
+	hashedpw, err := utility.Hash("p@ssw0rd123_321")
+	if err != nil {
+		//TODO add log service
+		log.Fatalf("could not hash the provided password: %v\n", err)
+		return err
+	}
+
+	mr.Create(s.User{
+		ID:             uuid.NewString(),
+		FullName:       "Super User",
+		Username:       "Superuser",
+		Email:          "super@user.su",
+		Avatar:         "http://nil.nil",
+		HashedPassword: hashedpw,
+		Role:           "superuser",
+		CreatedAt:      time.Now(),
+		CreatedBy:      "",
+		ModifiedAt:     time.Time{},
+		ModifiedBy:     "",
+	})
+	return nil
 }
 
 // Create function stores provided user in memory and returns id or error
