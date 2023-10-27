@@ -1,8 +1,9 @@
 package api
 
 import (
-	i "hms-project/common/interfaces"
 	"log"
+
+	i "github.com/tazafrosoul/hms-project/common/interfaces"
 )
 
 type Api struct {

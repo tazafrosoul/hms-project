@@ -1,9 +1,10 @@
 package service
 
 import (
-	i "hms-project/common/interfaces"
-	s "hms-project/common/structs"
 	"log"
+
+	i "github.com/tazafrosoul/hms-project/common/interfaces"
+	s "github.com/tazafrosoul/hms-project/common/structs"
 )
 
 type Service struct {

@@ -6,7 +6,6 @@ type User struct {
 	ID             string    `json:"id"`
 	FullName       string    `json:"full_name"`
 	Username       string    `json:"username"`
-	Email          string    `json:"email"`
 	Avatar         string    `json:"avatar"`
 	HashedPassword string    `json:"hashed_password"`
 	Role           string    `json:"role"`
@@ -27,7 +26,6 @@ type AddUserReq struct {
 	By       string `json:"by"`
 	FullName string `json:"full_name"`
 	Username string `json:"username"`
-	Email    string `json:"email"`
 	Avatar   string `json:"avatar"`
 	Password string `json:"hashed_password"`
 	Role     string `json:"role"`
@@ -37,7 +35,6 @@ type AddUserRes struct {
 	ID       string `json:"id"`
 	FullName string `json:"full_name"`
 	Username string `json:"username"`
-	Email    string `json:"email"`
 	Avatar   string `json:"avatar"`
 	Role     string `json:"role"`
 }

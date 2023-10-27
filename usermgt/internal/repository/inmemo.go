@@ -1,12 +1,13 @@
 package repository
 
-//this is the test database. this will only be used for a development only. will not be included in development
+//this is the test database. this will only be used for a development only. will not be included in production
 import (
 	"errors"
-	s "hms-project/common/structs"
-	"hms-project/common/utility"
 	"log"
 	"time"
+
+	s "github.com/tazafrosoul/hms-project/common/structs"
+	"github.com/tazafrosoul/hms-project/common/utility"
 
 	"github.com/google/uuid"
 )
@@ -16,7 +17,7 @@ type MemoRepo struct {
 }
 
 func NewMemoRepo() *MemoRepo {
-	title := []string{"ID", "FullName", "Username", "Email", "Avatar", "HashedPassword", "Role", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy"}
+	title := []string{"ID", "FullName", "Username", "Avatar", "HashedPassword", "Role", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy"}
 
 	return &MemoRepo{
 		memoryStorage: [][]string{title},
@@ -37,7 +38,6 @@ func (mr *MemoRepo) Init() error {
 		ID:             uuid.NewString(),
 		FullName:       "Super User",
 		Username:       "Superuser",
-		Email:          "super@user.su",
 		Avatar:         "http://nil.nil",
 		HashedPassword: hashedpw,
 		Role:           "superuser",
@@ -62,7 +62,6 @@ func (mr *MemoRepo) Create(newuser s.User) (string, error) {
 		newuser.ID,
 		newuser.FullName,
 		newuser.Username,
-		newuser.Email,
 		newuser.Avatar,
 		newuser.HashedPassword,
 		newuser.Role,

@@ -1,6 +1,6 @@
 package database
 
-import s "hms-project/common/structs"
+import s "github.com/tazafrosoul/hms-project/common/structs"
 
 type RedisDB struct {
 }

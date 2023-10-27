@@ -1,4 +1,4 @@
-grpc:
+grpc: grpc/users/usermgt.proto
 	rm -rf grpc/users/pb/*
 	cd grpc/users && protoc --go_out=pb --go_opt=paths=source_relative --go-grpc_out=pb --go-grpc_opt=paths=source_relative usermgt.proto
 
@@ -15,10 +15,10 @@ build: buildserver buildusermgt
 
 # run commands
 runserver: buildserver
-	alacritty -e ./bin/server &
+	./bin/server &
 
 runusermgt: buildusermgt
-	alacritty -e ./bin/usermgt
+	./bin/usermgt
 
 run: runserver runusermgt
 

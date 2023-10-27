@@ -3,11 +3,12 @@ package grpc
 import (
 	"context"
 	"fmt"
-	i "hms-project/common/interfaces"
-	s "hms-project/common/structs"
-	"hms-project/grpc/users/pb"
 	"log"
 	"net"
+
+	i "github.com/tazafrosoul/hms-project/common/interfaces"
+	s "github.com/tazafrosoul/hms-project/common/structs"
+	"github.com/tazafrosoul/hms-project/grpc/users/pb"
 
 	"google.golang.org/grpc"
 )
@@ -31,7 +32,6 @@ func (ut *UserTransport) AddUser(ctx context.Context, in *pb.UserRequest) (*pb.U
 		By:       in.By,
 		FullName: in.FullName,
 		Username: in.Username,
-		Email:    in.Email,
 		Avatar:   in.Avatar,
 		Role:     in.Role,
 		Password: in.Password, //TODO hash password + validate on the http server
@@ -45,7 +45,6 @@ func (ut *UserTransport) AddUser(ctx context.Context, in *pb.UserRequest) (*pb.U
 	return &pb.UserResponse{ //change this hardwired mess
 		FullName: res.FullName,
 		Username: res.Username,
-		Email:    res.Email,
 		Avatar:   res.Avatar,
 		Role:     res.Role,
 		ID:       res.ID,

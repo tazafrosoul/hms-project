@@ -1,8 +1,8 @@
 package repository
 
 import (
-	i "hms-project/common/interfaces"
-	s "hms-project/common/structs"
+	i "github.com/tazafrosoul/hms-project/common/interfaces"
+	s "github.com/tazafrosoul/hms-project/common/structs"
 )
 
 // TODO implement redis as a cache and postgress as main DB system

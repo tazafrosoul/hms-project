@@ -1,8 +1,8 @@
 package userservice
 
 import (
-	i "hms-project/common/interfaces"
-	s "hms-project/common/structs"
+	i "github.com/tazafrosoul/hms-project/common/interfaces"
+	s "github.com/tazafrosoul/hms-project/common/structs"
 )
 
 type UserService struct {
@@ -25,7 +25,6 @@ func (us *UserService) AddUser(req s.AddUserReq) (s.AddUserRes, error) {
 	user := s.User{
 		FullName:       req.FullName,
 		Username:       req.Username,
-		Email:          req.Email,
 		Avatar:         req.Avatar,
 		HashedPassword: req.Password,
 		Role:           req.Role,
@@ -41,7 +40,6 @@ func (us *UserService) AddUser(req s.AddUserReq) (s.AddUserRes, error) {
 		ID:       res,
 		FullName: req.FullName,
 		Username: req.Username,
-		Email:    req.Email,
 		Avatar:   req.Avatar,
 		Role:     req.Role,
 	}, nil

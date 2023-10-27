@@ -3,36 +3,37 @@ package grpc
 import (
 	"context"
 	"fmt"
-	s "hms-project/common/structs"
-	"hms-project/common/utility"
-	"hms-project/grpc/users/pb"
 	"log"
 	"time"
+
+	s "github.com/tazafrosoul/hms-project/common/structs"
+	"github.com/tazafrosoul/hms-project/common/utility"
+	"github.com/tazafrosoul/hms-project/grpc/users/pb"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var (
-	//TODO these vars are to be parsed as flags or as env variables
-	address string = "localhost:8081"
-)
-
-type GrpcTrans struct{}
-
-func NewGrpcTrans() *GrpcTrans {
-	return &GrpcTrans{}
+type Transport struct {
+	address string
 }
 
-func (t *GrpcTrans) AddUser(aurq s.AddUserReq) (s.AddUserRes, error) {
+func NewTransport(address string) *Transport {
+	return &Transport{
+		address: address,
+	}
+}
 
-	//TODO make this a separate GrpcTrans method
-	conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
+func (t *Transport) AddUser(aurq s.AddUserReq) (s.AddUserRes, error) {
+
+	//Dialing GrPC server
+	conn, err := grpc.Dial("localhost"+t.address, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("could not dial the grpc service: %v", err)
 	}
 	defer conn.Close()
 
+	//Pushing GrPC request
 	c := pb.NewUserMgtClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -50,7 +51,6 @@ func (t *GrpcTrans) AddUser(aurq s.AddUserReq) (s.AddUserRes, error) {
 		By:       aurq.By,
 		FullName: aurq.FullName,
 		Username: aurq.Username,
-		Email:    aurq.Email,
 		Avatar:   aurq.Avatar,
 		Password: hashedpw,
 		Role:     aurq.Role,
@@ -66,7 +66,6 @@ func (t *GrpcTrans) AddUser(aurq s.AddUserReq) (s.AddUserRes, error) {
 		ID:       res.ID,
 		FullName: res.FullName,
 		Username: res.Username,
-		Email:    res.Email,
 		Avatar:   res.Avatar,
 		Role:     res.Role,
 	}, nil

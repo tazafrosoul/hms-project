@@ -1,7 +1,7 @@
 package ginmux
 
 import (
-	i "hms-project/common/interfaces"
+	i "github.com/tazafrosoul/hms-project/common/interfaces"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,7 +21,6 @@ func NewGin(service i.ApiService) *Gin {
 
 // ---------ROUTES---------
 func (g *Gin) Route() {
-
 	g.server.POST("/user", AddUser(g.api.AddUser))
 }
 
