@@ -3,7 +3,6 @@ package main
 import (
 	"os"
 
-	"github.com/tazafrosoul/hms-project/common/utility"
 	"github.com/tazafrosoul/hms-project/usermgt/internal/repository"
 	"github.com/tazafrosoul/hms-project/usermgt/internal/transport/grpc"
 	"github.com/tazafrosoul/hms-project/usermgt/internal/userservice"
@@ -11,7 +10,7 @@ import (
 
 func main() {
 	//Load environment variables
-	utility.Loadvars(".env.dev")
+	// utility.Loadvars(".env.dev")
 
 	var (
 		grpcaddress string = os.Getenv("GRPC_SERVER_ADDRESS")

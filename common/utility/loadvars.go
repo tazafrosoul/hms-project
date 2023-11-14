@@ -1,6 +1,8 @@
 package utility
 
-import "github.com/joho/godotenv"
+import (
+	"github.com/joho/godotenv"
+)
 
 func Loadvars(filename string) {
 

@@ -3,7 +3,6 @@ package main
 import (
 	"os"
 
-	"github.com/tazafrosoul/hms-project/common/utility"
 	"github.com/tazafrosoul/hms-project/server/internal/api"
 	"github.com/tazafrosoul/hms-project/server/internal/api/mux/ginmux"
 	"github.com/tazafrosoul/hms-project/server/internal/service"
@@ -13,7 +12,7 @@ import (
 //TODO implement api transport layer
 
 func main() {
-	utility.Loadvars(".env.dev")
+	// utility.Loadvars("../.env.dev") //this will compile within docker image. Will not load environment if built here.
 
 	var (
 		httpaddress string = os.Getenv("HTTP_SERVER_PORT")
@@ -26,5 +25,4 @@ func main() {
 	api := api.NewApi(mux)
 	api.Route()
 	api.Run(httpaddress)
-
 }

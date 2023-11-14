@@ -4,24 +4,33 @@ grpc: grpc/users/usermgt.proto
 
 
 # build commands
-buildserver: grpc
-	go build -o bin/server server/cmd/main.go
+copymod: go.mod
+	cp -R common/ grpc/ server/mod
+	cp go.mod server/mod/
+	cp -R common/ grpc/ usermgt/mod
+	cp go.mod usermgt/mod/
 
-buildusermgt: grpc
+
+dockserver: grpc copymod
+	cd ./server && \
+	docker build -t apiserver:latest .
+
+dockusermgt: grpc
 	go build -o bin/usermgt usermgt/cmd/main.go
 
 build: buildserver buildusermgt
 
 
 # run commands
-runserver: buildserver
-	./bin/server &
+runserver: dockserver
+	./bin/server
 
-runusermgt: buildusermgt
+runusermgt: dockusermgt
 	./bin/usermgt
 
 run: runserver runusermgt
 
 # clean commands
 clean:
-	rm -rf bin/*
+	rm -rf server/mod/*
+	rm -rf usermgt/mod/*
